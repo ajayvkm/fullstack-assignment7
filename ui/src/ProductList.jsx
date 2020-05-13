@@ -28,7 +28,17 @@ export default class ProductList extends React.Component {
         this.loadData();
     }
 
+    async loadCount() {
+        const queryCount = `query { productCount }`;
+        const responseCount = await graphQLFetch(queryCount);
+        if(responseCount) {
+            this.setState({count: responseCount.productCount});
+        }
+    }
+
     async loadData() {
+        this.loadCount();
+
         const query = `query {
             productList {
                 id
@@ -43,14 +53,6 @@ export default class ProductList extends React.Component {
         if(response) {
             this.setState({ products: response.productList});
         }
-
-
-        const queryCount = `query { productCount }`;
-        const responseCount = await graphQLFetch(queryCount);
-        if(responseCount) {
-            this.setState({count: responseCount.productCount});
-        }
-
     }
 
     async createProduct(product) {
@@ -81,6 +83,7 @@ export default class ProductList extends React.Component {
                     history.push({ pathname: '/products', search });
                 }
                 newList.splice(index, 1);
+                this.loadCount();
                 return { products: newList };
             });
         } else {

@@ -975,34 +975,21 @@ function (_React$Component) {
       this.loadData();
     }
   }, {
-    key: "loadData",
+    key: "loadCount",
     value: function () {
-      var _loadData = _asyncToGenerator(
+      var _loadCount = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
-        var query, response, queryCount, responseCount;
+        var queryCount, responseCount;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                query = "query {\n            productList {\n                id\n                productName\n                price\n                category\n                imageUrl\n            }\n        }";
-                _context.next = 3;
-                return Object(_graphQLFetch_js__WEBPACK_IMPORTED_MODULE_3__["graphQLFetch"])(query);
-
-              case 3:
-                response = _context.sent;
-
-                if (response) {
-                  this.setState({
-                    products: response.productList
-                  });
-                }
-
                 queryCount = "query { productCount }";
-                _context.next = 8;
+                _context.next = 3;
                 return Object(_graphQLFetch_js__WEBPACK_IMPORTED_MODULE_3__["graphQLFetch"])(queryCount);
 
-              case 8:
+              case 3:
                 responseCount = _context.sent;
 
                 if (responseCount) {
@@ -1011,12 +998,51 @@ function (_React$Component) {
                   });
                 }
 
-              case 10:
+              case 5:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee, this);
+      }));
+
+      function loadCount() {
+        return _loadCount.apply(this, arguments);
+      }
+
+      return loadCount;
+    }()
+  }, {
+    key: "loadData",
+    value: function () {
+      var _loadData = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2() {
+        var query, response;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                this.loadCount();
+                query = "query {\n            productList {\n                id\n                productName\n                price\n                category\n                imageUrl\n            }\n        }";
+                _context2.next = 4;
+                return Object(_graphQLFetch_js__WEBPACK_IMPORTED_MODULE_3__["graphQLFetch"])(query);
+
+              case 4:
+                response = _context2.sent;
+
+                if (response) {
+                  this.setState({
+                    products: response.productList
+                  });
+                }
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
       }));
 
       function loadData() {
@@ -1030,20 +1056,20 @@ function (_React$Component) {
     value: function () {
       var _createProduct = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee2(product) {
+      regeneratorRuntime.mark(function _callee3(product) {
         var query, data;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 query = "mutation productAdd($product: ProductInputs!) {\n            productAdd(product: $product) {\n                id\n            }\n        }";
-                _context2.next = 3;
+                _context3.next = 3;
                 return Object(_graphQLFetch_js__WEBPACK_IMPORTED_MODULE_3__["graphQLFetch"])(query, {
                   product: product
                 });
 
               case 3:
-                data = _context2.sent;
+                data = _context3.sent;
 
                 if (data) {
                   this.loadData();
@@ -1051,10 +1077,10 @@ function (_React$Component) {
 
               case 5:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee3, this);
       }));
 
       function createProduct(_x) {
@@ -1068,24 +1094,26 @@ function (_React$Component) {
     value: function () {
       var _deleteProduct = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee3(index) {
+      regeneratorRuntime.mark(function _callee4(index) {
+        var _this2 = this;
+
         var query, products, _this$props, _this$props$location, pathname, search, history, id, data;
 
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 query = "mutation productDelete($id: Int!) {\n          productDelete(id: $id)\n        }";
                 products = this.state.products;
                 _this$props = this.props, _this$props$location = _this$props.location, pathname = _this$props$location.pathname, search = _this$props$location.search, history = _this$props.history;
                 id = products[index].id;
-                _context3.next = 6;
+                _context4.next = 6;
                 return Object(_graphQLFetch_js__WEBPACK_IMPORTED_MODULE_3__["graphQLFetch"])(query, {
                   id: id
                 });
 
               case 6:
-                data = _context3.sent;
+                data = _context4.sent;
 
                 if (data && data.productDelete) {
                   this.setState(function (prevState) {
@@ -1099,6 +1127,9 @@ function (_React$Component) {
                     }
 
                     newList.splice(index, 1);
+
+                    _this2.loadCount();
+
                     return {
                       products: newList
                     };
@@ -1109,10 +1140,10 @@ function (_React$Component) {
 
               case 8:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
 
       function deleteProduct(_x2) {
