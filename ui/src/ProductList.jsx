@@ -17,7 +17,8 @@ export default class ProductList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            products: []
+            products: [],
+            count: Int32Array
         };
         this.createProduct = this.createProduct.bind(this);
         this.deleteProduct = this.deleteProduct.bind(this);
@@ -42,6 +43,14 @@ export default class ProductList extends React.Component {
         if(response) {
             this.setState({ products: response.productList});
         }
+
+
+        const queryCount = `query { productCount }`;
+        const responseCount = await graphQLFetch(queryCount);
+        if(responseCount) {
+            this.setState({count: responseCount.productCount});
+        }
+
     }
 
     async createProduct(product) {
@@ -80,7 +89,7 @@ export default class ProductList extends React.Component {
     }
 
     render() {
-        const { products } = this.state;
+        const { products, count } = this.state;
         return (
             <React.Fragment>
                 <Panel>
@@ -92,7 +101,7 @@ export default class ProductList extends React.Component {
                     <Panel.Body collapsible>
                     </Panel.Body>
                 </Panel>
-                <span>Showing {products.length} available products</span>
+                <span>Showing {count} available products</span>
                 <hr/>
                 <ProductTable products={products} deleteProduct={this.deleteProduct}/>
                 <hr/>

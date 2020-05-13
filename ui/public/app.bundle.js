@@ -961,7 +961,8 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(ProductList).call(this, props));
     _this.state = {
-      products: []
+      products: [],
+      count: Int32Array
     };
     _this.createProduct = _this.createProduct.bind(_assertThisInitialized(_this));
     _this.deleteProduct = _this.deleteProduct.bind(_assertThisInitialized(_this));
@@ -979,7 +980,7 @@ function (_React$Component) {
       var _loadData = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
-        var query, response;
+        var query, response, queryCount, responseCount;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -997,7 +998,20 @@ function (_React$Component) {
                   });
                 }
 
-              case 5:
+                queryCount = "query { productCount }";
+                _context.next = 8;
+                return Object(_graphQLFetch_js__WEBPACK_IMPORTED_MODULE_3__["graphQLFetch"])(queryCount);
+
+              case 8:
+                responseCount = _context.sent;
+
+                if (responseCount) {
+                  this.setState({
+                    count: responseCount.productCount
+                  });
+                }
+
+              case 10:
               case "end":
                 return _context.stop();
             }
@@ -1110,12 +1124,14 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var products = this.state.products;
+      var _this$state = this.state,
+          products = _this$state.products,
+          count = _this$state.count;
       return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_2___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Panel"], null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Panel"].Heading, null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Panel"].Title, {
         toggle: true
       }, "Filter")), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Panel"].Body, {
         collapsible: true
-      })), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("span", null, "Showing ", products.length, " available products"), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_ProductTable_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      })), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("span", null, "Showing ", count, " available products"), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_ProductTable_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
         products: products,
         deleteProduct: this.deleteProduct
       }), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_ProductAdd_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {

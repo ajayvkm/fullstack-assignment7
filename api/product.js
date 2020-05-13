@@ -62,6 +62,19 @@ async function remove(_, { id }) {
     return false;
 }
 
+async function counts() {
+    const db = getDb();
+    const products = await db.collection('products').aggregate([
+        {
+            $group: {
+                _id: null,
+                count: { $sum: 1},
+            },
+        },
+    ]).toArray();
+    return products[0].count;
+}
+
 //get, update, delete: remove,
 module.exports = {
     productList,
@@ -69,4 +82,5 @@ module.exports = {
     get,
     update,
     delete: remove,
+    counts
 };

@@ -11,6 +11,7 @@ const resolvers = {
         about: () => about.getMessage,
         productList: products.productList,
         product: products.get,
+        productCount: products.counts,
     },
     Mutation: {
         setAboutMessage: about.setMessage,

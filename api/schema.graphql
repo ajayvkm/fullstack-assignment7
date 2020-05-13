@@ -34,8 +34,8 @@ type Query {
     about: String!,
     productList: [Product!]!
     product(id: Int!): Product!
+    productCount: Int
 }
-
 type Mutation {
     setAboutMessage(message: String!): String
     productAdd(product: ProductInputs!): Product!
