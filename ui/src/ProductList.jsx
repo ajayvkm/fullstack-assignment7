@@ -104,7 +104,7 @@ export default class ProductList extends React.Component {
                     <Panel.Body collapsible>
                     </Panel.Body>
                 </Panel>
-                <span>Showing {count} available products</span>
+                <span>Showing <b>{count}</b> available products</span>
                 <hr/>
                 <ProductTable products={products} deleteProduct={this.deleteProduct}/>
                 <hr/>
